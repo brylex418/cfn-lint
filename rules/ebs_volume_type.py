@@ -1,5 +1,5 @@
-from cfnlint import CloudFormationLintRule
-from cfnlint import RuleMatch
+from cfnlint.rules import CloudFormationLintRule
+from cfnlint.rules import RuleMatch
 
 
 class EBSVolumeType(CloudFormationLintRule):
