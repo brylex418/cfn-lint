@@ -28,7 +28,7 @@ class EBSVolumeType(CloudFormationLintRule):
     return matches
   
 class EBSEncrypted(CloudFormationLintRule):
-  """Check if EBS Volumes are using GP2 Volume Type"""
+  """Check if EBS Volumes are encrypted"""
   id = 'E9021'
   shortdesc = 'Outposts only support encrypted volumes'
 
