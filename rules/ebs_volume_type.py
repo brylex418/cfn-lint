@@ -26,4 +26,28 @@ class EBSVolumeType(CloudFormationLintRule):
               message.format(volume_type, full_path)
             ))
     return matches
+  
+class EBSEncrypted(CloudFormationLintRule):
+  """Check if EBS Volumes are using GP2 Volume Type"""
+  id = 'E9021'
+  shortdesc = 'Outposts only support encrypted volumes'
 
+  def match(self, cfn):
+    matches = list()
+    recordsets = cfn.get_resources(['AWS::EC2::Volume'])
+    for name, recordset in recordsets.items():
+      path = ['Resources', name, 'Properties']
+      full_path = ('/'.join(str(x) for x in path))
+      if isinstance(recordset, dict):
+        props = recordset.get('Properties')
+        if props:
+          encryption = props.get('Encrypted')
+          if encryption:
+            values = ['false', 'FALSE']
+          if encryption in values:
+            message =  "Property VolumeType set to {0} is not supported on Outposts in {1}"
+            matches.append(RuleMatch(
+              path,
+              message.format(encryption, full_path)
+            ))
+    return matches
